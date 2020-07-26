@@ -11,7 +11,6 @@ var messageText = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
-
 var pictures = document.querySelector('.pictures');
 var pictureTemplate = document.querySelector('#picture').content;
 
@@ -54,3 +53,39 @@ function randomInteger(min, max) {
   let rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 }
+
+// full-size img
+var pictureBig = document.querySelector('.big-picture');
+pictureBig.classList.remove('hidden');
+
+var pictureBigImg = pictureBig.querySelector('img');
+var pictureBigLikes = pictureBig.querySelector('.likes-count');
+var pictureBigCommentsCountText = pictureBig.querySelector('.comments-count');
+
+pictureBigImg.src = pictureArray[0].url;
+pictureBigLikes.textContent = pictureArray[0].likes;
+pictureBigCommentsCountText.textContent = pictureArray[0].comments.length;
+
+var pictureBigCommentsList = pictureBig.querySelector('.social__comments');
+var pictureBigComments = document.querySelector('#comment').content;
+var pictureBigComment = pictureBigComments.querySelector('.social__comment');
+var pictureBigCommentAvatar = pictureBigComment.querySelector('.social__picture');
+var pictureBigCommentText = pictureBigComment.querySelector('.social__text');
+
+var pictureBigCaption = pictureBig.querySelector('.social__caption');
+pictureBigCaption.textContent = pictureArray[0].description;
+var pictureBigCommentsCount = pictureBig.querySelector('.social__comment-count');
+var pictureBigCommentsLoad = pictureBig.querySelector('.comments-loader');
+pictureBigCommentsCount.classList.add('hidden');
+pictureBigCommentsLoad.classList.add('hidden');
+
+pictureBigCommentsList.innerHTML='';
+for (var i = 0; i < pictureArray[0].comments.length; i++) {
+pictureBigCommentText.textContent = pictureArray[0].comments[i].message;
+pictureBigCommentAvatar.src = pictureArray[0].comments[i].avatar;
+var newComment = pictureBigComment.cloneNode(true);
+pictureBigCommentsList.appendChild(newComment);
+}
+
+var body = document.querySelector('body');
+body.classList.add('modal-open');
