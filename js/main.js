@@ -56,7 +56,7 @@ function randomInteger(min, max) {
 
 // full-size img
 var pictureBig = document.querySelector('.big-picture');
-pictureBig.classList.remove('hidden');
+// pictureBig.classList.remove('hidden');
 
 var pictureBigImg = pictureBig.querySelector('img');
 var pictureBigLikes = pictureBig.querySelector('.likes-count');
@@ -79,13 +79,84 @@ var pictureBigCommentsLoad = pictureBig.querySelector('.comments-loader');
 pictureBigCommentsCount.classList.add('hidden');
 pictureBigCommentsLoad.classList.add('hidden');
 
-pictureBigCommentsList.innerHTML='';
+pictureBigCommentsList.innerHTML = '';
 for (var i = 0; i < pictureArray[0].comments.length; i++) {
-pictureBigCommentText.textContent = pictureArray[0].comments[i].message;
-pictureBigCommentAvatar.src = pictureArray[0].comments[i].avatar;
-var newComment = pictureBigComment.cloneNode(true);
-pictureBigCommentsList.appendChild(newComment);
+  pictureBigCommentText.textContent = pictureArray[0].comments[i].message;
+  pictureBigCommentAvatar.src = pictureArray[0].comments[i].avatar;
+  var newComment = pictureBigComment.cloneNode(true);
+  pictureBigCommentsList.appendChild(newComment);
 }
 
 var body = document.querySelector('body');
 body.classList.add('modal-open');
+
+var uploadBtn = document.querySelector('#upload-file');
+var formEditImg = document.querySelector('.img-upload__overlay');
+var closeBtn = document.querySelector('#upload-cancel');
+
+
+uploadBtn.addEventListener('change', function () {
+  formEditImg.classList.remove('hidden');
+});
+
+closeBtn.addEventListener('click', function () {
+  formEditImg.classList.add('hidden');
+  uploadBtn.value = '';
+});
+
+document.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === 27) {
+    formEditImg.classList.add('hidden');
+    uploadBtn.value = '';
+  }
+});
+
+
+//Отпускание элемента
+
+var effectScroll = document.querySelector('.effect-level__pin');
+
+effectScroll.addEventListener('mouseup', function (evt) {
+  evt.preventDefault();
+  console.log('fff');
+});
+
+var effectLvl = document.querySelector('.effect-level__value');
+effectLvl.value = effectScroll.style.left;
+
+var filterRadio = document.querySelectorAll('.effects__radio');
+
+var addFilterClickHeandler = function (filterRadio) {
+  filterRadio.addEventListener('change', function () {
+    effectScroll.style.left = '0';
+    effectLvl.value = effectScroll.style.left;
+  });
+};
+
+for (var i = 0; i < filterRadio.length; i++) {
+  addFilterClickHeandler(filterRadio[i]);
+}
+
+//валидация хеш тегов
+var hashtags = document.querySelector('.text__hashtags');
+var imgPublish = document.querySelector('#upload-select-image');
+
+imgPublish.addEventListener('submit', function (evt) {
+  evt.preventDefault();
+  var hashtagsSplit = hashtags.value.split(' ');
+  var tagValid = true;
+
+  if (hashtagsSplit.length <= 5) {
+    tagValid = false;
+  } else {
+    for (var i = 0; i < hashtagsSplit.length; i++) {
+      if (hashtagsSplit[i].charAt(0) !== '#' || hashtagsSplit[i].length > 20 || hashtagsSplit[i].length === 1) {
+        tagValid = false;
+      }
+    }
+  }
+  if (!tagValid) {
+    hashtags.setCustomValidity('loh');
+  }
+});
+
